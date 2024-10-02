@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Счет на оплату
+{% endblock %}
+
+{% block content %}
+<!-- Адрес и дата -->
+<section class="address-section">
+  <h2>Счет на оплату</h2>
+  <div class="address">
+    <p>Адрес: </p> <!-- Здесь выводим адрес заявки -->
+    <!-- <input type="text" placeholder="{{ order.address }}" class="search-bar" readonly> -->
+    <form method="POST" id="address-form">
+        {% csrf_token %}
+        <input type="text" name="address" placeholder="{{ order.address }}" class="search-bar" required>
+        <!-- <button type="submit">Обновить адрес</button> -->
+    </form>
+   </div>
+</section>
+
+<section class="order-services">
+    <p class="date">Дата: {{ data.order.order_date }}</p> <!-- Выводим дату заявки -->
+    
+    <!-- Форма для отправки данных -->
+    <form method="POST">
+      {% csrf_token %}
+      {% for service in data.datas %}
+      <div class="order-card">
+          <div class="item">
+              <img src="{{ service.service.icon }}" alt="{{ service.service.title }}" class="order-icon">
+              <div class="item-description">
+                  <h3 class="title1">{{ service.service.title }}</h3>
+                  <p class="title1">Тариф - {{ service.service.price }}</p>
+                  {% if service.service.title == "Горячее водоснабжение" or service.service.title == "Электроэнергия" or service.service.title == "Холодное водоснабжение" %}
+                      <p class="title1">Последние переданные показания: <span class="qwer">{{ service.last_reading }}</span></p>
+                      <p class="title1">Текущие показания <input type="text" name="current_reading_{{ service.id }}" value="{{ service.current_reading }}" class="pokaz-bar"></p>
+                  {% else %}
+                      <p class="title1">Дата последней оплаты: <span class="qwer">{{ service.last_reading }}</span></p>
+                  {% endif %}
+              </div>
+          </div>
+          <div class="itogo">
+              <p><img src="{{ service.payment_icon }}" alt="money" class="money"> Стоимость: {{ service.amount_due }} ₽</p>
+          </div>
+      </div>
+      {% endfor %}
+      <button type="submit" style="display:none;">Submit</button> <!-- Скрытая кнопка отправки -->
+    </form>
+        <div class="del-itog">
+            <div class="del"><form method="POST">
+                {% csrf_token %}
+                <button type="submit" name="delete_order" class="del-button">Удалить заявку</button>
+            </form>
+        </div>
+        <div class="itog-sum">ИТОГО: {{ data.order.total_amount }} ₽</div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Услуги
+{% endblock %}
+
+{% block content %}
+<!-- Поиск -->
+<form method="GET" action="{% url 'services_search' %}" class="search-section">
+    <h2>Услуги</h2>
+    <input type="text" name="rent_title" placeholder="Поиск услуги" class="search-bar" value="{{ request.GET.rent_title }}">
+</form>
+
+<section class="services">
+    {% for service in data.services %}
+    <div class="service-card">
+        <div class="pictures">
+            <img src="{{ service.icon1 }}" class="service-icon1">
+            <img src="{{ service.icon }}" alt="{{ service.title }}" class="service-icon">
+        </div>
+        <h3>{{ service.title }}</h3>
+        <div class="card-bottom">
+            <a href="{% url 'services_url' service.id %}"><button>Подробнее</button></a>
+            <p>
+                {% if service.id in data.added_services %}
+                <p></p>
+                <button disabled>Добавлено</button>
+            {% else %}
+            <form method="POST" action="{% url 'services_search' %}">
+                {% csrf_token %}
+                <input type="hidden" name="service_id" value="{{ service.id }}">
+                <button type="submit">{{ service.price }}</button>
+            </form>
+            {% endif %}
+            </p>
+        </div>
+    </div>
+    {% empty %}
+    <p>Услуги не найдены</p>
+    {% endfor %}
+</section>
+
+{% endblock %}
