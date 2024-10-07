@@ -31,8 +31,26 @@ class Rent_Order(models.Model):
     status = models.CharField(max_length=10, choices=StaTus.choices, default=StaTus.DRAFT)
     total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name="Итоговая стоимость")
 
+    # Новые поля
+    formation_date = models.DateField(verbose_name="Дата формирования", blank=True, null=True)
+    completion_date = models.DateField(verbose_name="Дата завершения", blank=True, null=True)
+    moderator = models.CharField(max_length=255, verbose_name="Модератор", default="Moderator1")
+
+    def save(self, *args, **kwargs):
+        # Установка значений по умолчанию для новых полей
+        if not self.formation_date:
+            self.formation_date = self.order_date
+        if not self.completion_date:
+            self.completion_date = self.order_date
+        super().save(*args, **kwargs)
+
     def recalculate_total(self):
         total = self.rent_orderservice_set.aggregate(total=models.Sum('amount_due'))['total'] or 0
+        self.total_amount = total
+        self.save()
+
+    def recalculate_total(self):
+        total = sum([service.calculate_amount_due() for service in self.rent_orderservice_set.all()])
         self.total_amount = total
         self.save()
 
@@ -49,15 +67,32 @@ class Rent_OrderService(models.Model):
     service = models.ForeignKey(Rent_Service, on_delete=models.CASCADE, verbose_name="Услуга")
     last_reading = models.CharField(null=True, blank=True, verbose_name="Последние показания/Дата последней оплаты")
     current_reading = models.CharField(null=True, blank=True, verbose_name="Текущие показания/Дата")
-    amount_due = models.IntegerField(verbose_name="Сумма к оплате", default=0)
-    payment_icon = models.URLField(max_length=200, null=True, blank=True, verbose_name="Иконка платежа", default="http://127.0.0.1:9000/lab1/money_icon.svg")
 
+    def calculate_amount_due(self):
+        try:
+            price = float(self.service.price.split()[0])  # Извлечение числового значения из цены
+            # Для водоснабжения и электроэнергии
+            if self.service.title in ["Горячее водоснабжение", "Холодное водоснабжение", "Электроэнергия"]:
+                if self.current_reading and self.last_reading:
+                    current_reading = float(self.current_reading)
+                    last_reading = float(self.last_reading)
+                    consumption = current_reading - last_reading
+                    return consumption * price
+            # Для остальных услуг (по месяцам)
+            else:
+                if self.current_reading and self.last_reading:
+                    current_date = datetime.strptime(self.current_reading, '%d.%m.%Y')
+                    last_date = datetime.strptime(self.last_reading, '%d.%m.%Y')
+                    month_diff = (current_date.year - last_date.year) * 12 + (current_date.month - last_date.month)
+                    if month_diff >= 0:
+                        return month_diff * price
+        except ValueError:
+            return 0
+        return 0
+    
     def save(self, *args, **kwargs):
 
-        # Устанавливаем значение payment_icon по умолчанию, если оно не указано
-        if not self.payment_icon:
-            self.payment_icon = "http://127.0.0.1:9000/lab1/money_icon.svg"
-
+        
         # Получаем предыдущие показания и дату для этой услуги по адресу
         last_order_service = (
             Rent_OrderService.objects

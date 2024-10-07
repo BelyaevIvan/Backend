@@ -41,7 +41,7 @@
               </div>
           </div>
           <div class="itogo">
-              <p><img src="{{ service.payment_icon }}" alt="money" class="money"> Стоимость: {{ service.amount_due }} ₽</p>
+              <p><img src="http://127.0.0.1:9000/lab1/money_icon.svg" alt="money" class="money"> Стоимость: {{ service.calculate_amount_due }} ₽</p>
           </div>
       </div>
       {% endfor %}

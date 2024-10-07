@@ -3,10 +3,11 @@ from .models import Rent_Service, Rent_Order, Rent_OrderService
 from django.db.models import Q
 from django.utils import timezone
 from django.db import connection
+from django.http import HttpResponseForbidden  # Импортируем для возврата запрета доступа
 
 # Главная страница с услугами, включая поиск по названию
 def hello(request):
-    query = request.GET.get('rent_title')  # Получаем параметр поиска из запроса
+    query = request.GET.get('q')  # Получаем параметр поиска из запроса
     if query:
         # Фильтруем услуги по началу названия
         filtered_services = Rent_Service.objects.filter(title__icontains=query)
@@ -74,18 +75,14 @@ def GetService(request, service_id):
 
 
 # Страница заказа с деталями по выбранным услугам
-def GetOrder(request, order_id):
-    order = get_object_or_404(Rent_Order, id=order_id)
-    order_services = Rent_OrderService.objects.filter(order=order)
-    
-    return render(request, 'order.html', {
-        'data': order_services,  # Услуги, связанные с заказом
-        'order': order,            # Информация о заказе (например, адрес и дата)
-        'order_id': order_id
-    })
 
 def order_detail(request, order_id):
     order = get_object_or_404(Rent_Order, id=order_id)
+
+    # Проверяем, если статус заявки не DRAFT
+    if order.status != 'DRAFT':
+        return HttpResponseForbidden("Нет доступа к этой заявке")  # Возвращаем сообщение об отсутствии доступа
+
     services = order.rent_orderservice_set.all()  # Получаем все услуги для этой заявки
 
     # Получаем заявку со статусом DRAFT
@@ -93,6 +90,7 @@ def order_detail(request, order_id):
         'order_date': timezone.now(),
         'address': '',
     })
+
 
     # Считаем количество услуг в заявке со статусом DRAFT
     service_count = Rent_OrderService.objects.filter(order=draft_order).count()
@@ -117,9 +115,18 @@ def order_detail(request, order_id):
         # Если нажата кнопка удаления заявки
         if 'delete_order' in request.POST:
             with connection.cursor() as cursor:
-                cursor.execute("UPDATE main_screen_order SET status = 'DELETED' WHERE id = %s", [order_id])
+                cursor.execute("UPDATE main_screen_rent_order SET status = 'DELETED' WHERE id = %s", [order_id])
             return redirect('services_search')  # Перенаправление на главную страницу после удаления
     
+    # Рассчитываем сумму для каждой услуги и общую стоимость заявки
+    total_amount = 0  # Инициализируем общую сумму
+    for service in services:
+        amount_due = service.calculate_amount_due()  # Расчет суммы на основе показаний
+        total_amount += amount_due  # Суммируем все услуги
+
+    # Обновляем общую сумму заказа в поле total_amount
+    order.total_amount = total_amount
+    order.save()  # Сохраняем изменения в БД
     
     return render(request, 'order.html',{'data': { 
                                                 'order': order,

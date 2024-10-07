@@ -5,10 +5,21 @@
 {% endblock %}
 
 {% block content %}
+
+<div class="cart-icon">
+    <a href="{% url 'order_url' data.order_id %}">
+        <img src="{{ 'http://127.0.0.1:9000/lab1/basket.svg' }}" alt="Корзина">
+        {% if data.service_count > 0 %}
+            <span class="cart-count">{{ data.service_count }}</span>
+        {% endif %}
+    </a>
+</div>
+<div></div>
+
 <!-- Поиск -->
 <form method="GET" action="{% url 'services_search' %}" class="search-section">
     <h2>Услуги</h2>
-    <input type="text" name="rent_title" placeholder="Поиск услуги" class="search-bar" value="{{ request.GET.rent_title }}">
+    <input type="text" name="q" placeholder="Поиск услуги" class="search-bar" value="{{ request.GET.q }}">
 </form>
 
 <section class="services">
