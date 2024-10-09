@@ -164,3 +164,7 @@ class Rent_OrderService(models.Model):
     class Meta:
         verbose_name = "Услуга заявки"
         verbose_name_plural = "Услуги заявок"
+
+        constraints = [
+        models.UniqueConstraint(fields=['order', 'service'], name='unique_order_service')
+    ]
