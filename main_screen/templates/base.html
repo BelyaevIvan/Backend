@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Услуги{% endblock %}</title>
+  <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+</head>
+<body>
+
+    <!-- Навигационная панель -->
+    <header class="navbar">
+        <div class="nav-icons">
+            <a href="/rent_services">
+                <img src="{{ 'http://127.0.0.1:9000/lab1/logo.svg' }}" alt="Меню">
+            </a>
+        </div>
+        <h1>Оплата услуг по адресу</h1>
+    </header>
+
+
+    <!-- Контент страницы -->
+    {% block content %}
+    {% endblock %}
+
+</body>
+</html>

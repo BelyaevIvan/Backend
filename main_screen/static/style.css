@@ -1,0 +1,402 @@
+/* Общие стили */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+}
+
+h1, h2, h3 {
+    margin: 0;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    padding: 15px 20px;
+    margin-bottom: 40px;
+    box-shadow: 0 2px 20px rgb(146, 146, 146); /* Добавлена тень снизу */
+    align-items: center;
+}
+
+header h1 {
+    font-size: 20px;
+    font-weight: bold;
+    width: 300px;
+    margin: 0 auto;
+}
+
+.nav-icons img, .cart-icon img {
+    width: 40px;
+    height: 40px;
+    
+}
+
+.cart-icon {
+    text-align: end;
+    margin-right: 20px;
+    position: relative;
+    
+}
+
+.basket-icon {
+    width: 25px;
+    height: 25px;
+    float: right;
+    padding: 15px 40px;
+}
+
+/* Поисковая секция */
+.search-section {
+    display: flex;
+    background-color: #fff;
+    text-align: center;
+    max-width: 1000px;
+    margin: 0px auto;
+    align-items: center;
+    flex-direction: column;
+}
+
+.search-section h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.tit {
+    margin-bottom: 20px;
+}
+
+.search-bar {
+    width: 430%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 20px; /* Закругленные углы */
+    background-color: #f0f0f0; /* Серый фон */
+    text-align: left;
+    max-width: 1000px;
+    margin: 7px auto;
+    align-items: center;
+    flex-direction: column;
+}
+
+/* Секция услуг */
+.services {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Три карточки на строке */
+    gap: 20px;
+    padding: 20px;
+    max-width: 1000px;
+    margin: 0 auto; /* Центрируем блок */
+    border: 1px solid #ccc; /* Серая рамка */
+    border-radius: 45px; /* Закругленные углы */
+    background-color: #fff;
+    margin-top: 30px;
+}
+
+.service-card {
+    background-color: #fff;
+    border-radius: 30px;
+    border: 1px solid #ccc; /* Серая рамка */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Контент растягивается, что позволяет привязать его к низу */
+    padding: 10px;
+    text-align: center;
+    transition: transform 0.2s ease;
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+}
+
+.service-icon {
+    width: 70%;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.service-icon1 {
+    width: 20%;
+    height: auto;
+}
+
+h3 {
+    font-size: 16px;
+    margin: 10px 0;
+}
+
+/* p, button-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+} */
+
+p {
+    font-size: 14px;
+    color: #666;
+    margin-right: 10px; /* Добавляем отступ справа от цены */
+}
+
+/* Обертка для кнопки и цены */
+.button-wrapper {
+    display: flex;
+    justify-content: space-between; /* Кнопка и цена разнесены */
+    align-items: center;
+    margin-top: auto; /* Привязываем блок к низу карточки */
+}
+
+button {
+    padding: 10px 15px;
+    background-color: #efefed;
+    border: 1px solid #cccbc7; /* Серая рамка */
+    color: #000000;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+button:hover {
+    background-color: #e67320;
+}
+
+
+.card-bottom{
+    display: flex;
+    flex-direction: row;
+    /* column-gap: 25%; */
+    align-items: center;
+    justify-content: center;
+}
+
+.service-detail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+}
+
+.back-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #ccc;
+    border-radius: 20px;
+    text-decoration: none;
+    color: #000;
+    margin-bottom: 20px;
+}
+
+.back-button:hover {
+    background-color: #bbb;
+}
+
+.service-info-card {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #fff;
+    padding: 20px;
+    max-width: 800px;
+    width: 100%;
+    border-radius: 30px;
+    border: 1px solid #ccc; /* Серая рамка */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.sic {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #fff;
+    padding: 20px;
+    max-width: 800px;
+    width: 100%;
+}
+
+
+
+.service-icon-info {
+    width: 20%;
+    height: auto;
+    margin-bottom: 10px;
+    margin-right: 20px;
+}
+
+.service-icon-info2 {
+    position: absolute;
+    top: 10px;  /* Прижимаем к верху */
+    right: 10px; /* Прижимаем к правому краю */
+    width: 5%;
+    height: auto;
+}
+
+.service-description {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    flex: 1;
+}
+
+.service-description img {
+    vertical-align: top;
+    float: right;
+    margin-top: 0;
+}
+
+.service-description p {
+    margin: 5px 0;
+    font-size: 16px;
+    color: #333;
+}
+
+.attention {
+    color: red;
+    font-weight: bold;
+}
+
+.service-description {
+    font-size: 16px;
+    line-height: 1.5;
+    justify-content: flex-start; /* Выровнять текст по левому краю */
+    align-items: flex-start;
+}
+
+.order-services {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr); 
+    gap: 20px;
+    padding: 20px;
+    max-width: 1000px;
+    margin: 0 auto; /* Центрируем блок */
+    border: 1px solid #ccc; /* Серая рамка */
+    border-radius: 45px; /* Закругленные углы */
+    background-color: #fff;
+    margin-top: 30px;
+}
+
+.pictures {
+    display: flex;
+    align-items: flex-start; /* Выровнять элементы по верхнему краю */
+}
+
+.order-card {
+    background-color: #fff;
+    border-radius: 30px;
+    border: 1px solid #ccc; /* Серая рамка */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Контент растягивается, что позволяет привязать его к низу */
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.2s ease;
+    margin-bottom: 20px;
+}
+
+.itogo {
+    color: #000000; /* Черный цвет */
+    font-weight: bold; /* Жирный текст */  
+    text-align: right;  
+}
+.address {
+    display: flex;
+    justify-content: flex-start;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: left
+}
+
+.item-description {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr); /* Три карточки на строке */
+    font-size: 16px;
+    line-height: 1.5;
+    justify-content: flex-start; /* Выровнять текст по левому краю */
+    align-items: flex-start;
+}
+
+.item {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.pokaz-bar {
+    width: 55px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 20px; /* Закругленные углы */
+    background-color: #f0f0f0; /* Серый фон */
+}
+
+.date {
+    text-align: right;
+    color: #000;
+    font-family: Inter;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.title1 {
+    text-align: left; 
+    margin-left: 10px;
+}
+
+.address-section {
+    background-color: #fff;
+    text-align: center;
+    max-width: 1000px;
+    margin: 0px auto;
+    align-items: center;
+    flex-direction: column;
+}
+
+.order-icon {
+
+    width: 30%;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.qwer {
+    font-size: 18px; 
+    font-family: 'Arial', sans-serif;
+    color: black;
+}
+
+.itog-sum {
+    font-weight: bold; /* Делает текст жирным */
+    text-align: right; /* Прижимает текст к правой стороне */
+    font-size: 30px;
+}
+
+.del-button:hover {
+    background-color: red;
+}
+
+.del {
+    text-align: left;
+}
+
+.del-itog {
+    display: flex;
+    justify-content: space-between; /* Разделяет элементы */
+}
+
+.cart-count {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 5px 10px;
+    font-size: 14px;
+}
