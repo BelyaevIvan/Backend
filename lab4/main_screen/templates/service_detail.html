@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Подробнее
+{% endblock %}
+
+{% block content %}
+
+<div class="cart-icon">
+    <a href="{% url 'order_url' data.order_id %}">
+        <img src="{{ 'http://127.0.0.1:9000/lab1/basket.svg' }}" alt="Корзина">
+        {% if data.service_count > 0 %}
+            <span class="cart-count">{{ data.service_count }}</span>
+        {% endif %}
+    </a>
+</div>
+<div></div>
+<section class="service-detail">
+    
+    <h2 class="tit">{{ data.title }}</h2>
+
+    <div class="service-info-card">
+        <img src="{{ data.service.icon }}" alt="Описание изображения" class="service-icon-info">
+        <div class="service-description">
+            <img src="{{ data.service.icon1 }}" alt="Описание изображения" class="service-icon-info2">
+            <p>Тариф - {{ data.service.price }}</p>
+            <p>{{ data.service.description }}</p>
+        </div>
+        
+    </div>
+</section>
+{% endblock %}
